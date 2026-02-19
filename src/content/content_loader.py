@@ -29,6 +29,8 @@ class Loader:
                 "snowball": "Snowball Fight",
                 "swiftplay": "Swiftplay",
                 "hurm": "Team Deathmatch",
+                "skirmish": "Skirmish",
+                "onesite": "All Random One Site",
                 "": "Custom",
             },
             "team_aliases": {
@@ -44,7 +46,7 @@ class Loader:
                 "Red": "team_defender",
                 "Blue": "team_attacker",
             },
-            "modes_with_icons": ["ggteam","onefa","snowball","spikerush","unrated","deathmatch","swiftplay","hurm"]
+            "modes_with_icons": ["ggteam","onefa","snowball","spikerush","unrated","deathmatch","swiftplay","hurm","skirmish","onesite"]
         }
         all_content = client.fetch_content()
         agents = Loader.fetch("/agents")["data"]

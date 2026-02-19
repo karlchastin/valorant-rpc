@@ -1,6 +1,5 @@
 from pypresence import Presence as PyPresence
 from pypresence.exceptions import InvalidPipe
-from InquirerPy.utils import color_print
 import time, sys, traceback, os, ctypes, asyncio, websockets, json, base64, ssl
 
 ssl_context = ssl.SSLContext(ssl.PROTOCOL_TLS_CLIENT)
@@ -147,7 +146,8 @@ class Presence:
     def init_loop(self):
         try:
             self.content_data = Loader.load_all_content(self.client)
-            color_print([("LimeGreen bold", Localizer.get_localized_text("prints","presence","presence_running"))])
+            # print() instead of color_print: this runs in a thread without an asyncio event loop
+            print(Localizer.get_localized_text("prints","presence","presence_running"))
             
             presence_data = self.client.fetch_presence()
 
@@ -226,7 +226,8 @@ class Presence:
         except Exception as e:
             user32.ShowWindow(hWnd, 1)
             kernel32.SetConsoleMode(kernel32.GetStdHandle(-10), (0x4|0x80|0x20|0x2|0x10|0x1|0x40|0x100))
-            color_print([("Red bold",Localizer.get_localized_text("prints","errors","error_message"))])
+            # print() instead of color_print: this runs in a thread without an asyncio event loop
+            print(Localizer.get_localized_text("prints","errors","error_message"))
             traceback.print_exc()
             input(Localizer.get_localized_text("prints","errors","exit"))
             os._exit(1)

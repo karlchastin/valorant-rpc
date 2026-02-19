@@ -5,6 +5,7 @@ from ..menu_presences.away import presence as away
 from ....localization.localization import Localizer
 from valclient.exceptions import PhaseError
 
+
 class Game_Session:
 
     def __init__(self,rpc,client,data,match_id,content_data,config):
@@ -69,9 +70,15 @@ class Game_Session:
             if is_afk:
                 away(self.rpc,self.client,presence,self.content_data,self.config)  
             else:
-                party_state,party_size = Utilities.build_party_state(presence)
-                my_score = presence.get("partyOwnerMatchScoreAllyTeam", 0)
-                other_score = presence.get("partyOwnerMatchScoreEnemyTeam", 0)
+                party_state, party_size = Utilities.build_party_state(presence)
+                # Replay: API may expose provisioningFlow "Replay" when watching a replay
+                provisioning = presence.get("provisioningFlow", "") or ""
+                if "replay" in provisioning.lower():
+                    details = Localizer.get_localized_text("presences", "replay", "watching")
+                else:
+                    my_score = presence.get("partyOwnerMatchScoreAllyTeam", 0)
+                    other_score = presence.get("partyOwnerMatchScoreEnemyTeam", 0)
+                    details = f"{self.mode_name} • {my_score} - {other_score}"
 
                 # Ensure small_text is at least 2 characters or None
                 small_text_final = self.small_text if self.small_text and len(self.small_text) >= 2 else None
@@ -79,7 +86,7 @@ class Game_Session:
 
                 self.rpc.update(
                     state=party_state,
-                    details=f"{self.mode_name} // {my_score} - {other_score}",
+                    details=details,
                     start=self.start_time,
                     large_image=self.large_image,
                     large_text=self.large_text,

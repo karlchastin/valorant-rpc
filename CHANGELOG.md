@@ -1,3 +1,23 @@
+## Version 3.4.0 - Améliorations présence et nouveaux modes
+
+### Nouvelles fonctionnalités
+
+- **Détection « Dans la file »** : le statut affiche correctement « Dans la file - [mode] » quand tu lances une recherche. Lecture des champs dans `partyPresenceData` / `matchPresenceData` (queueEntryTime, partyState, etc.).
+- **Détection replay** : en train de regarder un replay, la présence affiche « En train de regarder un replay » (détection via `sessionLoopState` / `partyOwnerSessionLoopState` = REPLAY dans le menu).
+- **Séparateur en partie** : le détail en partie utilise maintenant « • » au lieu de « // » (ex. `Competitive • 5 - 3`).
+- **Modes Skirmish (2v2) et All Random One Site** : support dans `queue_aliases` et locales pour l’affichage du nom du mode.
+
+### Corrections
+
+- Présence en file et en replay : utilisation de la structure imbriquée de l’API (`partyPresenceData`, `matchPresenceData`) pour tous les champs concernés.
+- `queue.py` lit `queueEntryTime` depuis `partyPresenceData` pour l’heure de début en file.
+
+### Installation
+
+Téléchargez l’exécutable de la release ou exécutez `python main.py` après `pip install -r requirements.txt`.
+
+---
+
 ## Version 3.3.5 - Bug Fixes and Improvements
 
 ### Bug Fixes

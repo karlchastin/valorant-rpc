@@ -1,0 +1,60 @@
+{
+  "isValid": true,
+  "isIdle": false,
+  "queueId": "unrated",
+  "provisioningFlow": "Invalid",
+  "partyId": "6899e68d-6c4f-4668-bb21-95d7dd698155",
+  "partySize": 1,
+  "maxPartySize": 5,
+  "partyOwnerMatchScoreAllyTeam": 0,
+  "partyOwnerMatchScoreEnemyTeam": 0,
+  "premierPresenceData": {
+    "rosterId": "",
+    "rosterName": "",
+    "rosterTag": "",
+    "rosterType": "VCT",
+    "division": 0,
+    "score": 0,
+    "plating": 0,
+    "showAura": false,
+    "showTag": false,
+    "showPlating": false
+  },
+  "matchPresenceData": {
+    "sessionLoopState": "MENUS",
+    "provisioningFlow": "Invalid",
+    "matchMap": "",
+    "queueId": "unrated"
+  },
+  "partyPresenceData": {
+    "partyId": "6899e68d-6c4f-4668-bb21-95d7dd698155",
+    "isPartyOwner": true,
+    "partyState": "DEFAULT",
+    "partyAccessibility": "CLOSED",
+    "partyLFM": false,
+    "partyClientVersion": "release-12.03-shipping-18-4261391",
+    "partyVersion": 1771496255481,
+    "partySize": 1,
+    "queueEntryTime": "2026.02.19-09.24.49",
+    "isPartyCrossPlayEnabled": false,
+    "isPlayerCrossPlayEnabled": false,
+    "partyPrecisePlatformTypes": 1,
+    "customGameName": "",
+    "customGameTeam": "",
+    "maxPartySize": 5,
+    "tournamentId": "",
+    "rosterId": "",
+    "partyOwnerSessionLoopState": "MENUS",
+    "partyOwnerMatchMap": "",
+    "partyOwnerProvisioningFlow": "Invalid",
+    "partyOwnerMatchScoreAllyTeam": 0,
+    "partyOwnerMatchScoreEnemyTeam": 0
+  },
+  "playerPresenceData": {
+    "playerCardId": "1f4df484-4e26-6bed-3d00-c9a1b79ed5f8",
+    "playerTitleId": "8f53997a-481a-d982-1deb-8fa995dbd7d4",
+    "accountLevel": 104,
+    "competitiveTier": 6,
+    "leaderboardPosition": 0
+  }
+}

@@ -5,8 +5,9 @@ def presence(rpc,client=None,data=None,content_data=None,config=None):
     if not data:
         return
     
-    party_state,party_size = Utilities.build_party_state(data)
-    queue_entry_time = data.get('queueEntryTime', "0001.01.01-00.00.00")
+    party_data = data.get("partyPresenceData") or {}
+    party_state, party_size = Utilities.build_party_state(data)
+    queue_entry_time = data.get('queueEntryTime') or party_data.get('queueEntryTime', "0001.01.01-00.00.00")
     start_time = Utilities.iso8601_to_epoch(queue_entry_time)
     small_image, mode_name = Utilities.fetch_mode_data(data, content_data)
     small_text = mode_name

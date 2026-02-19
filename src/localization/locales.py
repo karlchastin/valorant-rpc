@@ -24,6 +24,10 @@ Locales = {
             "agent": "agent",
             "rank": "rank",
             "map": "map",
+            "in_game_details": "in_game_details",
+            "score": "score",
+            "kda": "K/D/A",
+            "phase": "round_phase",
         },
         "prints": {
             "config_modification": {
@@ -88,7 +92,12 @@ Locales = {
                 "snowball": "Snowball Fight",
                 "swiftplay": "Swiftplay",
                 "hurm": "Team Deathmatch",
+                "skirmish": "Skirmish",
+                "onesite": "All Random One Site",
                 "": "Custom",
+            },
+            "replay": {
+                "watching": "Watching replay",
             },
             "pregame": {
                 "selecting": "Selecting",
@@ -101,6 +110,13 @@ Locales = {
             "startup": {
                 "loading": "Loading",
                 "view_github": "View on GitHub",
+            },
+            "round_phases": {
+                "attack": "Attack",
+                "defense": "Defense",
+                "buy": "Buy phase",
+                "intermission": "Intermission",
+                "in_game": "In game",
             }
         },
     },
@@ -543,10 +559,14 @@ Locales = {
             "agent": "agent",
             "rank": "rang",
             "map": "carte",
+            "in_game_details": "détail_en_partie",
+            "score": "score",
+            "kda": "K/D/A",
+            "phase": "phase_du_round",
         },
         "prints": {
             "config_modification": {
-                "select_option": "sélectinnez une option de configuration",
+                "select_option": "sélectionnez une option de configuration",
                 "config_saved": "configuration sauvée! Relancez le programme pour que les changements prennent effets.",
                 "set_prompt": "set value for"
             },
@@ -605,7 +625,12 @@ Locales = {
                 "onefa": "Réplication",
                 "custom": "Partie personalisée",
                 "snowball": "Bataille de boule de neige",
+                "skirmish": "Skirmish",
+                "onesite": "All Random One Site",
                 "": "Pesonalisée",
+            },
+            "replay": {
+                "watching": "En train de regarder un replay",
             },
             "pregame": {
                 "selecting": "En sélection",
@@ -618,6 +643,13 @@ Locales = {
             "startup": {
                 "loading": "Chargement",
                 "view_github": "Voir sur GitHub",
+            },
+            "round_phases": {
+                "attack": "Attaque",
+                "defense": "Défense",
+                "buy": "Phase d'achat",
+                "intermission": "Intermission",
+                "in_game": "En partie",
             }
         },
     },
