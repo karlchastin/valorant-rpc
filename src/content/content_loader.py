@@ -30,7 +30,13 @@ class Loader:
                 "swiftplay": "Swiftplay",
                 "hurm": "Team Deathmatch",
                 "skirmish": "Skirmish",
+                "skirmish2v2": "Skirmish",
                 "onesite": "All Random One Site",
+                "valaram": "All Random One Site",
+                "2v2": "Skirmish",
+                "2v2skirmish": "Skirmish",
+                "aros": "All Random One Site",
+                "allrandomonesite": "All Random One Site",
                 "": "Custom",
             },
             "team_aliases": {
@@ -46,7 +52,7 @@ class Loader:
                 "Red": "team_defender",
                 "Blue": "team_attacker",
             },
-            "modes_with_icons": ["ggteam","onefa","snowball","spikerush","unrated","deathmatch","swiftplay","hurm","skirmish","onesite"]
+            "modes_with_icons": ["ggteam","onefa","snowball","spikerush","unrated","deathmatch","swiftplay","hurm","skirmish","skirmish2v2","onesite","valaram","2v2","2v2skirmish","aros","allrandomonesite"]
         }
         all_content = client.fetch_content()
         agents = Loader.fetch("/agents")["data"]

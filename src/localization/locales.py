@@ -93,7 +93,9 @@ Locales = {
                 "swiftplay": "Swiftplay",
                 "hurm": "Team Deathmatch",
                 "skirmish": "Skirmish",
+                "skirmish2v2": "Skirmish",
                 "onesite": "All Random One Site",
+                "valaram": "All Random One Site",
                 "": "Custom",
             },
             "replay": {
@@ -626,7 +628,9 @@ Locales = {
                 "custom": "Partie personalisée",
                 "snowball": "Bataille de boule de neige",
                 "skirmish": "Skirmish",
+                "skirmish2v2": "Escarmouche",
                 "onesite": "All Random One Site",
+                "valaram": "All Random One Site",
                 "": "Pesonalisée",
             },
             "replay": {

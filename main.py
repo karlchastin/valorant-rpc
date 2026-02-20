@@ -36,6 +36,9 @@ from src.startup import Startup
 from src.utilities.config.app_config import default_config
 from src.localization.localization import Localizer
 
+# Version affichée au lancement (alignée sur app_config / version.py)
+VERSION = "v3.4.1"
+
 kernel32 = ctypes.WinDLL('kernel32')
 user32 = ctypes.WinDLL('user32')
 hWnd = kernel32.GetConsoleWindow()
@@ -45,7 +48,7 @@ if __name__ == "__main__":
 | | / / _ | / /  / __ \\/ _ \\/ _ | / |/ /_  __/__________  ____
 | |/ / __ |/ /__/ /_/ / , _/ __ |/    / / / /___/ __/ _ \\/ __/
 |___/_/ |_/____/\\____/_/|_/_/ |_/_/|_/ /_/     /_/ / .__/\\__/ 
-                                                  /_/ """),("White",f"{default_config['version']}\n")])
+                                                  /_/ """),("White",f"{VERSION}\n")])
     try:
         app = Startup()
     except ModuleNotFoundError as e:

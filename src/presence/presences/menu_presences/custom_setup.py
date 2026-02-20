@@ -11,12 +11,13 @@ def presence(rpc,client=None,data=None,content_data=None,config=None):
     if is_afk:
         away(rpc,client,data,content_data,config)  
    
-    else: 
+    else:
         party_state,party_size = Utilities.build_party_state(data)
-        match_map = data.get("matchMap", "")
-        if match_map:
-            data["MapID"] = match_map
-        game_map,map_name = Utilities.fetch_map_data(data,content_data)
+        pp = data.get("partyPresenceData") or {}
+        mp = data.get("matchPresenceData") or {}
+        match_map = data.get("matchMap") or pp.get("matchMap") or pp.get("partyOwnerMatchMap") or mp.get("matchMap") or ""
+        coregame_like = {"MapID": match_map} if match_map else {}
+        game_map, map_name = Utilities.fetch_map_data(coregame_like, content_data)
         custom_game_team = data.get("customGameTeam", "")
         team = content_data["team_image_aliases"].get(custom_game_team, "game_icon_white") if custom_game_team in content_data["team_image_aliases"] else "game_icon_white"
         team_patched = content_data["team_aliases"].get(custom_game_team) if custom_game_team in content_data["team_aliases"].keys() else None

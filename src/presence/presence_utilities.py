@@ -56,8 +56,11 @@ class Utilities:
         
     @staticmethod 
     def fetch_map_data(coregame_data,content_data):
+        map_id = coregame_data.get("MapID", "") if coregame_data else ""
+        if not map_id:
+            return "", ""
         for gmap in content_data["maps"]:
-            if gmap["path"] == coregame_data["MapID"]:
+            if gmap["path"] == map_id:
                 return gmap["display_name"], gmap["display_name_localized"]
         return "", ""
  
@@ -72,10 +75,22 @@ class Utilities:
 
     @staticmethod
     def fetch_mode_data(data, content_data):
-        image = f"mode_{data['queueId'] if data['queueId'] in content_data['modes_with_icons'] else 'discovery'}"
-        mode_name = content_data['queue_aliases'][data['queueId']] if data["queueId"] in content_data["queue_aliases"].keys() else "Custom"
-        mode_name = Utilities.localize_content_name(mode_name, "presences", "modes", data["queueId"])
-        return image,mode_name
+        # queueId peut être à la racine ou dans partyPresenceData / matchPresenceData
+        pp = data.get("partyPresenceData") or {}
+        mp = data.get("matchPresenceData") or {}
+        queue_id = data.get("queueId") or pp.get("queueId") or mp.get("queueId") or ""
+        queue_id_lower = (queue_id or "").lower().strip()
+        aliases = content_data["queue_aliases"]
+        icons = content_data["modes_with_icons"]
+        mode_name = aliases.get(queue_id) or aliases.get(queue_id_lower)
+        if mode_name is None:
+            mode_name = "Custom"
+            # Log pour identifier le queueId réel envoyé par l’API (Skirmish, All Random One Site, etc.)
+            debug(f"[mode] Custom fallback -> queueId root={data.get('queueId')!r} party={pp.get('queueId')!r} match={mp.get('queueId')!r} | provisioningFlow={data.get('provisioningFlow')!r} | party keys={list(pp.keys())} match keys={list(mp.keys())}")
+        image_key = queue_id if queue_id in icons else (queue_id_lower if queue_id_lower in icons else "discovery")
+        image = f"mode_{image_key}"
+        mode_name = Utilities.localize_content_name(mode_name, "presences", "modes", queue_id or queue_id_lower)
+        return image, mode_name
 
     @staticmethod 
     def get_content_preferences(client,pref,presence,player_data,coregame_data,content_data):
@@ -84,8 +99,26 @@ class Utilities:
         if pref == Localizer.get_localized_text("config", "map"): 
             gmap = Utilities.fetch_map_data(coregame_data,content_data)
             return f"splash_{gmap[0].lower()}", gmap[1]
-        if pref == Localizer.get_localized_text("config", "agent"): 
-            return Utilities.fetch_agent_data(player_data["CharacterID"],content_data)
+        if pref == Localizer.get_localized_text("config", "agent"):
+            # CharacterID peut venir du coregame (player_data) ou de la présence (mise à jour en partie, ex. All Random One Site)
+            char_id = None
+            if player_data:
+                char_id = player_data.get("CharacterID") or player_data.get("characterId")
+            if not char_id and presence:
+                pp = presence.get("partyPresenceData") or {}
+                mp = presence.get("matchPresenceData") or {}
+                pl = presence.get("playerPresenceData") or {}
+                pr = presence.get("premierPresenceData") or {}
+                char_id = (
+                    presence.get("CharacterID") or presence.get("characterId")
+                    or pp.get("CharacterID") or pp.get("characterId")
+                    or mp.get("CharacterID") or mp.get("characterId")
+                    or pl.get("CharacterID") or pl.get("characterId")
+                    or pr.get("CharacterID") or pr.get("characterId")
+                )
+            if char_id:
+                return Utilities.fetch_agent_data(char_id, content_data)
+            return "rank_0", "?"
 
     @staticmethod
     def localize_content_name(default,*keys):
