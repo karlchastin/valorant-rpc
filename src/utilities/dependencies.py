@@ -39,24 +39,54 @@ def check_dependencies():
     
     return missing
 
-def install_dependencies():
-    """Installe les dépendances manquantes depuis requirements.txt."""
-    requirements_path = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), "requirements.txt")
+def install_all_dependencies():
+    """Installe toutes les dépendances depuis requirements.txt. Retourne True si succès."""
+    requirements_path = get_requirements_path()
     if not os.path.exists(requirements_path):
         return False
-    
     try:
-        subprocess.check_call([sys.executable, "-m", "pip", "install", "-r", requirements_path], 
-                            stdout=subprocess.DEVNULL, 
-                            stderr=subprocess.DEVNULL)
+        subprocess.check_call(
+            [sys.executable, "-m", "pip", "install", "-r", requirements_path],
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+        )
         return True
-    except subprocess.CalledProcessError:
+    except (subprocess.CalledProcessError, Exception):
         return False
-    except Exception:
+
+def _is_frozen():
+    """True si l'app tourne en exe PyInstaller (pas besoin de vérifier les deps)."""
+    return getattr(sys, 'frozen', False)
+
+
+def get_requirements_path():
+    """Chemin vers requirements.txt (depuis la racine du projet ou du exe)."""
+    if _is_frozen():
+        # Exe : à côté de l'exécutable
+        base = os.path.dirname(sys.executable)
+    else:
+        base = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
+    return os.path.join(base, "requirements.txt")
+
+
+def install_package(pip_name):
+    """Installe un seul paquet pip. Retourne True si succès."""
+    try:
+        subprocess.check_call(
+            [sys.executable, "-m", "pip", "install", pip_name],
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+        )
+        return True
+    except (subprocess.CalledProcessError, Exception):
         return False
+
 
 def verify_and_install():
     """Vérifie et installe les dépendances si nécessaire."""
+    if _is_frozen():
+        # Exe packagé : tout est inclus, pas de vérification pip
+        return True, []
     missing = check_dependencies()
     if missing:
         return False, missing

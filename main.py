@@ -2,33 +2,56 @@ import ctypes,os,traceback
 
 # Vérifier les dépendances AVANT les autres imports
 try:
-    from src.utilities.dependencies import verify_and_install
+    from src.utilities.dependencies import (
+        verify_and_install,
+        check_dependencies,
+        install_package,
+        install_all_dependencies,
+    )
     deps_ok, missing_deps = verify_and_install()
-    if not deps_ok:
+    while not deps_ok and missing_deps:
         kernel32 = ctypes.WinDLL('kernel32')
         user32 = ctypes.WinDLL('user32')
         hWnd = kernel32.GetConsoleWindow()
         user32.ShowWindow(hWnd, 1)
         kernel32.SetConsoleMode(kernel32.GetStdHandle(-10), (0x4|0x80|0x20|0x2|0x10|0x1|0x40|0x100))
-        
-        # Essayer d'importer color_print pour les messages, sinon utiliser print
         try:
             from InquirerPy.utils import color_print
             color_print([("Red bold", "Erreur : Bibliothèques Python manquantes")])
             color_print([("Yellow", f"Les bibliothèques suivantes ne sont pas installées : {', '.join(missing_deps)}")])
-            color_print([("Cyan", "Pour installer toutes les dépendances, exécutez :")])
-            color_print([("White", "pip install -r requirements.txt")])
-        except:
+            color_print([("Cyan", "(y) installer un module  (n) annuler  (a) tout installer : ")])
+        except Exception:
             print("Erreur : Bibliothèques Python manquantes")
             print(f"Les bibliothèques suivantes ne sont pas installées : {', '.join(missing_deps)}")
-            print("Pour installer toutes les dépendances, exécutez :")
-            print("pip install -r requirements.txt")
-        
+            print("(y) installer un module  (n) annuler  (a) tout installer : ")
+        choice = input().strip().lower()
+        if choice == "n":
+            try:
+                color_print([("White", "pip install -r requirements.txt")])
+            except Exception:
+                print("pip install -r requirements.txt")
+            input("Appuyez sur Entrée pour quitter...")
+            os._exit(1)
+        if choice == "a":
+            if install_all_dependencies():
+                deps_ok, missing_deps = verify_and_install()
+                if deps_ok:
+                    break
+            continue
+        if choice == "y":
+            first = missing_deps[0]
+            if install_package(first):
+                missing_deps = check_dependencies()
+                deps_ok = len(missing_deps) == 0
+                if deps_ok:
+                    break
+            continue
+        # Choix invalide, réafficher la question au prochain tour
+    if not deps_ok and missing_deps:
         input("Appuyez sur Entrée pour quitter...")
         os._exit(1)
 except ImportError:
     # Si le module de vérification n'existe pas, on continue
-    # mais on capturera les erreurs d'import plus tard
     pass
 
 from InquirerPy.utils import color_print
@@ -37,7 +60,7 @@ from src.utilities.config.app_config import default_config
 from src.localization.localization import Localizer
 
 # Version affichée au lancement (alignée sur app_config / version.py)
-VERSION = "v3.4.1"
+VERSION = "v3.4.2"
 
 kernel32 = ctypes.WinDLL('kernel32')
 user32 = ctypes.WinDLL('user32')

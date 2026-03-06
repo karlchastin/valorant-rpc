@@ -14,6 +14,9 @@ class Logger:
             datefmt="%H:%M:%S",
             level=logging.DEBUG,
         )
+        # Réduire le bruit des librairies tierces (connexions HTTP, asyncio, plugins PIL)
+        for name in ("urllib3.connectionpool", "asyncio", "PIL.Image"):
+            logging.getLogger(name).setLevel(logging.WARNING)
         logger = logging.getLogger("rpc")
         logger.debug("created log")
 

@@ -3,8 +3,8 @@ from PyInstaller.utils.hooks import collect_submodules, collect_all
 
 block_cipher = None
 
-# Collect all submodules from src
-hiddenimports = ['pystray._win32']
+# Collect all submodules from src + dépendances parfois manquées par l'analyse
+hiddenimports = ['pystray._win32', 'iso8601']
 try:
     hiddenimports += collect_submodules('src')
 except:

@@ -23,7 +23,11 @@ def presence(rpc,client=None,data=None,content_data=None,config=None):
         team_patched = content_data["team_aliases"].get(custom_game_team) if custom_game_team in content_data["team_aliases"].keys() else None
         team_patched = Utilities.localize_content_name(team_patched, "presences", "team_names", custom_game_team)
         buttons = Utilities.get_join_state(client,config,data)
-        
+
+        # Discord n'accepte pas un large_text vide, on met une valeur par défaut lisible
+        if not map_name:
+            map_name = Localizer.get_localized_text("presences","client_states","custom_setup")
+
         party_id = data.get("partyId", "")
 
         rpc.update(

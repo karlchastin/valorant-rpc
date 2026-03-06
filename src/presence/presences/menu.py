@@ -29,14 +29,25 @@ def presence(rpc,client=None,data=None,content_data=None,config=None):
     }
     
     # Vérifier d'abord si on est dans un match personnalisé (salon)
-    # Indicateurs possibles : partyState == "CUSTOM_GAME_SETUP", matchMap présent, customGameTeam présent
+    # Indicateurs possibles forts :
+    # - partyState == "CUSTOM_GAME_SETUP"
+    # - queueId == "custom"
+    # - provisioningFlow == "CustomGame"
     is_custom_game = False
     if data:
         pp = data.get("partyPresenceData") or {}
         mp = data.get("matchPresenceData") or {}
-        if data.get('partyState') == "CUSTOM_GAME_SETUP" or pp.get('partyState') == "CUSTOM_GAME_SETUP":
+        party_state_root = data.get("partyState")
+        party_state_pp = pp.get("partyState")
+        queue_id = (data.get("queueId") or pp.get("queueId") or mp.get("queueId") or "").lower()
+        prov_root = str(data.get("provisioningFlow") or "").upper()
+        prov_match = str(mp.get("provisioningFlow") or "").upper()
+
+        if party_state_root == "CUSTOM_GAME_SETUP" or party_state_pp == "CUSTOM_GAME_SETUP":
             is_custom_game = True
-        elif data.get('matchMap') or data.get('customGameTeam') or pp.get('matchMap') or pp.get('customGameTeam') or mp.get('matchMap'):
+        elif queue_id == "custom":
+            is_custom_game = True
+        elif "CUSTOMGAME" in prov_root or "CUSTOMGAME" in prov_match:
             is_custom_game = True
     
     if is_custom_game:
